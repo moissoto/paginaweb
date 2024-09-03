@@ -5,8 +5,23 @@
 <h2>{{the_title}}</h2>
 <link rel="stylesheet" href="static/hf.css">
 <div>
-    <h1>Calculadora</h1>
+    <form action="/calculadora" method="POST">
+        <input type="number" size="20" name="n1">
+        <input type="number" size="20" name="n2">
+        <select name="operacion" id="">
+            <option value="1">Suma</option>
+            <option value="2">Resta</option>
+            <option value="3">Multiplicación</option>
+            <option value="4">División</option>
+            <option value="5">Residuo</option>
+        </select>
+
+        <input type="submit" name="ejecutar" value = "Ejecutar">
+
+    </form>
 </div>
+
+
 
 
 

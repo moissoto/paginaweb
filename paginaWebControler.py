@@ -1,16 +1,24 @@
 from flask import Flask,render_template,request
-
+from calculadora import operacion
 
 app = Flask(__name__,template_folder='templates')
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/", methods=["GET"])
 def index()->'html':
     return render_template('index.html',the_title = "Moissoto Web")
 
 
-@app.route("/calculadora", methods=["GET"])
+@app.route("/calculadora", methods=["GET","POST"])
 def calculadora()->'html':
-    return render_template("calculadora.html", the_title="Calculadora")
+    if request.method == 'POST':
+        n1=int(request.form['n1'])
+        n2=int(request.form['n2'])
+        op=int(request.form['operacion'])
+        data =  operacion(n1,n2,op)
+        return render_template("resultado.html", data = data, the_title = 'Resultado')
+    else:
+        return render_template("calculadora.html", the_title="Calculadora")
+        
 
 @app.route("/codificador", methods=["GET"])
 def codificador () -> 'html':
@@ -18,11 +26,11 @@ def codificador () -> 'html':
 
 @app.route("/recetario", methods=["GET"])
 def recetario() -> 'html':
-    return render_template ("recetario.html", the_title = "Receetario")
+    return render_template ("recetario.html", the_title = "Recetario")
 
-@app.route("/hanging", methods=["GET"])
+@app.route("/hangman", methods=["GET"])
 def hanging () -> 'html':
-    return render_template("hanging.html", the_title = "Juego del ahorcado")
+    return render_template("hangman.html", the_title = "Juego del ahorcado")
 
 @app.route("/compresorzip", methods = ["GET"])
 def compresor () -> 'html':
@@ -30,7 +38,7 @@ def compresor () -> 'html':
 
 @app.route("/pdftoword", methods = ["GET"])
 def pdftotext () -> 'html':
-    return render_template("pdftotext.html", the_title="PDF to Word")
+    return render_template("pdftoword.html", the_title="PDF to Word")
 
 @app.route("/mailsender", methods = ["GET"])
 def mailsender () -> 'html':

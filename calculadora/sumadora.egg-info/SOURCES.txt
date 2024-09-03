@@ -1,0 +1,6 @@
+README.txt
+setup.py
+sumadora.egg-info/PKG-INFO
+sumadora.egg-info/SOURCES.txt
+sumadora.egg-info/dependency_links.txt
+sumadora.egg-info/top_level.txt
