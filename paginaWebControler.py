@@ -50,10 +50,17 @@ def smssender () -> 'hmtl':
 
 @app.route("/controlhospital", methods=["GET"])
 def controlHosital () -> 'html':
-    return render_template("controlHospital.html", the_title= "Control Hospital")
+    return render_template("controlhospital.html", the_title= "Control Hospital")
 
 @app.route("/controlescolar", methods=["GET"])
 def controlEscolar () -> 'html':
-    return render_template("controlEscolar.html", the_title = "Control Escolar")
+    return render_template("controlescolar.html", the_title = "Control Escolar")
+
+@app.route("/upload", methods = ["GET","POST"])
+def upload()->'html':
+    if request.method==["POST"]:
+        data = request
+        return render_template("subirArchivoResultado.html",the_title= "Subir archivo", data=data)
+        return render_template('subirarchivo.html',the_title = 'Subir archivo')
 
 app.run()
