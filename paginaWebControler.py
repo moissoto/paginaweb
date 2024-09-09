@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request
 from calculadora import operacion
 from codificador import encode64,decode64
-import base64
+import os
 
 app = Flask(__name__,template_folder='templates')
 
@@ -43,9 +43,13 @@ def recetario() -> 'html':
 def hanging () -> 'html':
     return render_template("hangman.html", the_title = "Juego del ahorcado")
 
-@app.route("/compresorzip", methods = ["GET"])
+@app.route("/compresorzip", methods = ["GET","POST"])
 def compresor () -> 'html':
-    return render_template("compresorzip.html", the_title="Compresor de archivos a ZIP")
+    if request.method == "POST":
+        ruta = os.path.dirname(os.path.abspath(__file__))
+        return render_template("compresorzipresultado.html",data = ruta, the_title='Compresor Zip')
+    else:
+        return render_template("compresorzip.html", the_title="Compresor de archivos a ZIP")
 
 @app.route("/pdftoword", methods = ["GET"])
 def pdftotext () -> 'html':
