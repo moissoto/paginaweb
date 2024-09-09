@@ -1,5 +1,7 @@
 from flask import Flask,render_template,request
 from calculadora import operacion
+from codificador import encode64,decode64
+import base64
 
 app = Flask(__name__,template_folder='templates')
 
@@ -20,9 +22,18 @@ def calculadora()->'html':
         return render_template("calculadora.html", the_title="Calculadora")
         
 
-@app.route("/codificador", methods=["GET"])
+@app.route("/codificador", methods=["GET","POST"])
 def codificador () -> 'html':
-    return render_template("codificador.html", the_title="Codificador")
+    if request.method =='POST':
+        texto = request.form['txtarea']
+        codificar = request.form['codificar']
+        if codificar =='Codificar':
+            data = encode64(texto)
+        else:
+            data = decode64(texto)
+        return render_template('codificado.html', data = data, the_title = 'Codigicador')
+    else:
+        return render_template("codificador.html", the_title="Codificador")
 
 @app.route("/recetario", methods=["GET"])
 def recetario() -> 'html':
@@ -58,9 +69,10 @@ def controlEscolar () -> 'html':
 
 @app.route("/upload", methods = ["GET","POST"])
 def upload()->'html':
-    if request.method==["POST"]:
-        data = request
+    if request.method == "POST":
+        data = request.method
         return render_template("subirArchivoResultado.html",the_title= "Subir archivo", data=data)
-        return render_template('subirarchivo.html',the_title = 'Subir archivo')
-
-app.run()
+    else:
+        return render_template("subirArchivo.html", the_title="Subir Archivo")
+        
+app.run(debug=True)
