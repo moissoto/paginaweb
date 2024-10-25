@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+
+{% block body %}
+
+<h2>{{the_title}}</h2>
+<link rel="stylesheet" href="static/hf.css">
+<div>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="archivo">
+    <input type = "submit" value ="Subir">
+    
+</form>
+</div>
+
+
+
+{%endblock%}
