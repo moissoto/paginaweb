@@ -1,0 +1,7 @@
+README.txt
+codificador.py
+setup.py
+codificador.egg-info/PKG-INFO
+codificador.egg-info/SOURCES.txt
+codificador.egg-info/dependency_links.txt
+codificador.egg-info/top_level.txt
