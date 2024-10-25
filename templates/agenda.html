@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{% block body %}
+
+<h2>{{the_title}}</h2>
+<link rel="stylesheet" href="static/hf.css">
+<div>
+    <form action="/agenda" method="POST">
+        <label>Nombre:</label><input type="text" name="nombre" maxlength="50" id=""></label>
+        <label>Pseudonimo:</label><input type="text" name="pseudonimo" maxlength="20" id=""></label>
+        <label>Número telefónico:</label><input type="tel" name="telefono" id=""></label>
+        <label>E-Mail:</label><input type="email" name="correo" id=""></label>
+
+        <input type="submit" value="Agregar" name="agregar">
+    </form>
+</div>
+
+
+
+{%endblock%}
