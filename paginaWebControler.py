@@ -33,6 +33,22 @@ def codificador () -> 'html':
     else:
         return render_template("codificador.html", the_title="Codificador")
 
+@app.route("/agendaTelefonica", methods=["GET","POST"])
+def agendaTelefonica() ->'html':
+    if request.method=='POST':
+        nombre = request.form['nombre']
+        pseudonimo = request.form['pseudonimo']
+        telefono = request.form['telefono']
+        email = request.form['correo']
+        agenda = {
+            'Nombre':nombre,
+            'Pseudonimo': pseudonimo,
+            'Teléfono':telefono,
+            'Email':email
+        }
+        return render_template('mostrarAgenda.html',the_title='Agenda', agenda = agenda)
+    return render_template("agenda.html",the_title='Agenda Telefónica')
+
 @app.route("/recetario", methods=["GET"])
 def recetario() -> 'html':
     return render_template ("recetario.html", the_title = "Recetario")
@@ -65,4 +81,4 @@ def controlHosital () -> 'html':
 def controlEscolar () -> 'html':
     return render_template("controlescolar.html", the_title = "Control Escolar")
 
-app.run()
+app.run(debug=True)
