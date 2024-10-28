@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
 from calculadora import operacion
 from codificador import encode64,decode64
+import gzip, shutil
 
 
 app = Flask(__name__,template_folder='templates')
@@ -48,11 +49,25 @@ def agendaTelefonica() ->'html':
             'Teléfono':telefono,
             'Email':email
         }
-        return render_template('mostrarAgenda.html',the_title='Agenda', agenda = agenda)
-    return render_template("agenda.html",the_title='Agenda Telefónica')
+        return render_template('mostrarAgenda.html',the_title='Agenda Telefónica', agenda = agenda)
+    else:
+        return render_template("agenda.html",the_title='Agenda Telefónica')
 
-@app.route("/recetario", methods=["GET"])
+@app.route("/recetario", methods=["GET","POST"])
 def recetario() -> 'html':
+    if request.method=="POST":
+        titulo = request.form['titulo']
+        descripcion= request.form['descripcion']
+        ingredientes = request.form['ingredientes']
+        preparacion = request.form['preparacion']
+        receta = {
+            'titulo' : titulo,
+            'descripcion' : descripcion,
+            'ingredientes' : ingredientes,
+            'preparacion' : preparacion
+        }
+        return render_template ('mostrarReceta.html', the_title = 'Recetario', receta = receta)
+
     return render_template ("recetario.html", the_title = "Recetario")
 
 @app.route("/hangman", methods=["GET"])
@@ -61,7 +76,14 @@ def hanging () -> 'html':
 
 @app.route("/compresorzip", methods = ["GET","POST"])
 def compresor () -> 'html':
-    return render_template("compresorzip.html", the_title="Compresor de archivos a ZIP")
+    if request.method == "POST":
+        archivo = request.files['archivo']
+        with open(archivo, 'rb') as f_in:
+            with gzip.open(archivo, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+        return render_template("compresorzipresultado.html", the_title ='compresor zip',data=f_out)
+    else:
+        return render_template("compresorzip.html", the_title="Compresor de archivos a ZIP")
 
 @app.route("/pdftoword", methods = ["GET"])
 def pdftotext () -> 'html':
