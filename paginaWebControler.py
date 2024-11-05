@@ -2,6 +2,7 @@ from flask import Flask,render_template,request
 from calculadora import operacion
 from codificador import encode64,decode64
 import gzip, shutil
+from pdf2docx import Converter
 
 
 app = Flask(__name__,template_folder='templates')
@@ -85,9 +86,18 @@ def compresor () -> 'html':
     else:
         return render_template("compresorzip.html", the_title="Compresor de archivos a ZIP")
 
-@app.route("/pdftoword", methods = ["GET"])
+@app.route("/pdftoword", methods = ["GET","POST"])
 def pdftotext () -> 'html':
-    return render_template("pdftoword.html", the_title="PDF to Word")
+    if request.method =="POST":
+        archivo=request.files["archivo"]
+        #pdf_file = 'Ejercicio+03.pdf'
+        pdf_file = archivo.filename 
+        docx_file = 'sample2.docx'
+        cv = Converter(pdf_file)
+        cv.convert(docx_file)
+        return render_template('pdftoword.html', the_title='PDF to word', data = docx_file)
+    else:
+        return render_template("pdftoword.html", the_title="PDF to Word",data =None)
 
 @app.route("/mailsender", methods = ["GET"])
 def mailsender () -> 'html':

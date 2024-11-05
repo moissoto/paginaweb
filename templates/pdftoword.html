@@ -4,9 +4,17 @@
 
 <h2>{{the_title}}</h2>
 <link rel="stylesheet" href="static/hf.css">
-<div>
 
+{% if data is none%}
+<div>
+    <form action="pdftoword" method="POST" enctype="multipart/form-data">
+        <input type="file" name="archivo">
+        <input type="submit" value = 'Convertir'>
+    </form>
 </div>
+{%else%}    
+    {{data}}
+{%endif%}
 
 
 
