@@ -3,6 +3,8 @@ from calculadora import operacion
 from codificador import encode64,decode64
 import gzip, shutil
 from pdf2docx import Converter
+import smtplib
+from email.message import EmailMessage
 
 
 app = Flask(__name__,template_folder='templates')
@@ -79,8 +81,8 @@ def hanging () -> 'html':
 def compresor () -> 'html':
     if request.method == "POST":
         archivo = request.files['archivo']
-        with open(archivo, 'rb') as f_in:
-            with gzip.open(archivo, 'wb') as f_out:
+        with open(archivo.filename, 'rb') as f_in:
+            with gzip.open(archivo.filename+".gz", 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
         return render_template("compresorzipresultado.html", the_title ='compresor zip',data=f_out)
     else:
@@ -91,17 +93,31 @@ def pdftotext () -> 'html':
     if request.method =="POST":
         archivo=request.files["archivo"]
         #pdf_file = 'Ejercicio+03.pdf'
-        pdf_file = archivo.filename 
-        docx_file = 'sample2.docx'
+        pdf_file = archivo.filename
+        docx_file = pdf_file+'.docx'
         cv = Converter(pdf_file)
         cv.convert(docx_file)
         return render_template('pdftoword.html', the_title='PDF to word', data = docx_file)
     else:
         return render_template("pdftoword.html", the_title="PDF to Word",data =None)
 
-@app.route("/mailsender", methods = ["GET"])
+@app.route("/mailsender", methods = ["GET", "POST"])
 def mailsender () -> 'html':
-    return render_template("mailsender.html", the_title="Enviar correo")
+    if request.method=="POST":
+        with open('textfile') as fp:
+            msg = EmailMessage()
+            msg.set_content()
+
+        msg['Subject'] =f'The contents of {textfile}'
+        msg['From'] = 'apostadormoi@gmail.com'
+        msg['To'] = 'moissoto@gmail.com'
+
+        s = smtplib.SMTP('localhost')
+        s.send_message(msg)
+        s.quit()
+        return render_template ('mailsender.html', the_title = 'Enviar correo' )
+    else:
+        return render_template("mailsender.html", the_title="Enviar correo")
 
 @app.route("/smssender", methods = ["GET"])
 def smssender () -> 'hmtl':
